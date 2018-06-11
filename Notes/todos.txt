@@ -1,0 +1,17 @@
+
+- benodigdheden simulatie
+- classes opzetten
+  - speler
+  - spel
+  - generatie
+- 
+
+
+
+
+
+
+
+onnette code
++ pop wordt niet automatisch aangemaakt: aparte functie nodig
+- bij play_game wordt een list van 1 element vergeleken met een list
