@@ -9,9 +9,9 @@ from Classes.game import Game
 
 class Generation(object):
 
-	def __init__(self, name, pop_size):
+	def __init__(self, id, pop_size):
 
-		self.name = name
+		self.id = id
 		self.population = self.create_population(pop_size)
 
 

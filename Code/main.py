@@ -1,56 +1,63 @@
 
 
 import numpy.random as rnd
+import copy
 
 from Classes.player import Player
 from Classes.generation import Generation
 from Classes.game import Game
 
 
-# rnd.seed(4)
+rnd.seed(6)
 
-test = Generation(1, 100)
-test.assign_random()
-test.play_games(200, 0.4)
 
-total_points = 0
+def next_generation(nr_generations, previous, nr_games, alpha):
 
-for agent in test.population:
+	for i in range(0, nr_generations):
 
-	# print(agent.score)
+		previous.play_games(nr_games, alpha)
 
-	if agent.score > 0:
+		total_points = 0
 
-		total_points += agent.score
+		for agent in previous.population:
 
-# print(total_points)
+			if agent.score > 0:
 
-# hoi = 0
+				total_points += agent.score
 
-for agent in test.population:
+		for agent in previous.population:
 
-	if agent.score > 0:
+			if agent.score > 0:
 
-		agent.fitness = int(agent.score / total_points * 1000)
+				agent.fitness = int(agent.score / total_points * 1000)
 
-	else:
+			else:
 
-		agent.fitness = 0
+				agent.fitness = 0
 
-	# hoi += agent.fitness
+		fitness_list = []
 
-# print(hoi)
+		for agent in previous.population:
 
-fitness_list = []
+			print('player ', agent.id, '   fitness ', agent.fitness)
 
-for agent in test.population:
+			for j in range(0, agent.fitness):
 
-	for i in range(0, agent.fitness):
+				fitness_list.append(copy.deepcopy(agent))
 
-		fitness_list.append(agent)
+		# print(len(fitness_list))
 
-# print(fitness_list)
+		next = Generation(previous.id + 1, len(previous.population))
+		next.assign_by_fitness(fitness_list)
+		next.play_games(nr_games, alpha)
 
-test2 = Generation(2, 100)
-test2.assign_by_fitness(fitness_list)
-test2.play_games(200, 0.4)
+		print('generation ', i)
+
+		previous = next
+
+	return next
+
+first = Generation(1, 100)
+first.assign_random()
+
+last = next_generation(1000, first, 20, 0.4)
