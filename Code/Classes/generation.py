@@ -25,20 +25,55 @@ class Generation(object):
 
 		return population
 
+
 	def assign_random(self):
 
 		for agent in self.population:
 
-			agent.tactic_1 = agent.random_tactic(1)
-			agent.tactic_2 = agent.random_tactic(2)
+			agent.random_tactic()
 
 
 	def assign_by_fitness(self, fitness_list):
 
 		for agent in self.population:
 
-			agent.tactic_1 = agent.fitness_tactic(1, fitness_list)
-			agent.tactic_2 = agent.fitness_tactic(2, fitness_list)
+			agent.fitness_tactic(fitness_list)
+
+
+	def calc_fitness(self):
+
+		total = 0
+
+		for agent in self.population:
+
+			if agent.score > 0:
+
+				total += agent.score
+
+		for agent in self.population:
+
+			if agent.score <= 0:
+
+				agent.fitness = 0
+
+			else:
+
+				agent.fitness = agent.score / total
+
+
+	def create_fitness_list(self):
+
+		self.calc_fitness()
+
+		list = []
+
+		for agent in self.population:
+
+			for i in range(0, int(agent.fitness * 200)):
+
+				list.append(agent)
+
+		return list
 
 
 	def play_games(self, nr_rounds, alpha):
@@ -48,7 +83,6 @@ class Generation(object):
 			list_1 = []
 			list_2 = []
 
-			indices = []
 			j = [None]
 
 			for i in range(0, int(len(self.population) / 2)):
@@ -61,8 +95,8 @@ class Generation(object):
 
 			for i in range(0, int(len(self.population) / 2)):
 
-				while any(elem in j for elem in list_1) or \
-					  any(elem in j for elem in list_2):
+				while any(elem in j for elem in list_2) or \
+					  any(elem in j for elem in list_1):
 
 					j[0] = rnd.randint(0, len(self.population))
 
@@ -72,5 +106,5 @@ class Generation(object):
 
 				game = Game(self.population[list_1[i]],
 							self.population[list_2[i]], alpha)
-				# print(game.play())
+
 				game.play()

@@ -49,51 +49,37 @@ class Game(object):
 		player_1 = self.players[0]
 		player_2 = self.players[1]
 
-		move_1 = player_1.decide_move(self, 1)
+		if round_nr == 1:
 
-		if move_1 == 'fold':
+			player_1.score -= 1
+			player_2.score -= 1
+			self.stakes += 2
+
+		move_1 = player_1.decide_move(self)
+
+		if move_1 == 0:
 
 			self.payout(2)
 
-			return '2 wins'
+			return '1 folds'
 
-		elif move_1 == 'check':
+		elif move_1 == 1:
 
 			player_1.score -= 1
 			self.stakes += 1
 
-			move_2 = player_2.decide_move(self, 2)
+			move_2 = player_2.decide_move(self)
 
-			if move_2 == 'fold':
+			if move_2 == 0:
 
 				self.payout(1)
 
-				return '1 wins'
+				return '2 folds'
 
-			elif move_2 == 'check':
+			elif move_2 == 1:
 
 				player_2.score -= 1
 				self.stakes += 1
-
-				return 'next round'
-
-		elif move_1 == 'raise':
-
-			player_1.score -= 2
-			self.stakes += 2
-
-			move_2 = player_2.decide_move(self, 2)
-
-			if move_2 == 'fold':
-
-				self.payout(1)
-
-				return '1 wins'
-
-			elif move_2 == 'check':
-
-				player_2.score -= 2
-				self.stakes += 2
 
 				return 'next round'
 
