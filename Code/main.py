@@ -11,11 +11,13 @@ from visualizers import create_lists, plot_results
 
 # rnd.seed(6)
 
-alpha = 0.4
-pop_size = 100
+alpha = 0.1
+pop_size = 10
 nr_games = 100
 
-test = Simulation(1, alpha, pop_size, nr_games)
-test.iterate(50)
+for i in range(0, 1):
 
-plot_results(create_lists(test))
+	test = Simulation(1, alpha, pop_size, nr_games)
+	test.iterate(100)
+
+	plot_results(create_lists(test))

@@ -52,10 +52,18 @@ def plot_results(info):
 
 	ax1.plot(info['u + r'])
 	ax4.plot(info['u + b'])
+	ax1.set_title('unknown + red')
+	ax4.set_title('unknown + black')
+
 	ax2.plot(info['r + r'])
 	ax5.plot(info['r + b'])
+	ax2.set_title('red + red')
+	ax5.set_title('red + black')
+
 	ax3.plot(info['b + r'])
 	ax6.plot(info['b + b'])
+	ax3.set_title('black + red')
+	ax6.set_title('black + black')
 
 
 	plt.show()
