@@ -51,4 +51,4 @@ class Player(object):
 
 			self.tactic[tag] = fitness_list[i].tactic[tag]
 
-			self.parents[tag] = fitness_list[i].id
+			self.parents[tag] = fitness_list[i]

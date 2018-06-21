@@ -60,12 +60,10 @@ def create_network(simulation, nash):
 
 	graph = {}
 	pos = {}
-	colour_nodes = {}
 
 	for tag in simulation.generations[1].population[1].tactic:
 
 		graph[tag] = nx.Graph()
-		colour_nodes[tag] = []
 
 	factor_x = 1 / len(simulation.generations)
 	factor_y = 1 / (simulation.pop_size + dist_mutated)
@@ -78,17 +76,32 @@ def create_network(simulation, nash):
 
 				if agent.tactic == nash:
 
-					colour_nodes[tag].append('blue')
+					colour_node = 'blue'
 
 				elif agent.tactic[tag] == nash[tag]:
 
-					colour_nodes[tag].append('steelblue')
+					colour_node = 'steelblue'
 
 				else:
 
-					colour_nodes[tag].append('grey')
+					colour_node = 'grey'
 
-				graph[tag].add_node(agent.id)
+				graph[tag].add_node(agent.id, colour=colour_node)
+
+				if agent.type != 'mutated':
+
+					for tag in agent.parents:
+
+						if agent.tactic[tag] == nash[tag]:
+
+							colour_edge = 'steelblue'
+
+						else:
+
+							colour_edge = 'grey'
+
+						graph[tag].add_edge(agent.parents[tag].id, agent.id,
+											colour=colour_edge)
 
 			pos[agent.id] = [agent.gen * factor_x,
 							 (agent.id - 1000 * agent.gen) * factor_y]
@@ -97,25 +110,10 @@ def create_network(simulation, nash):
 
 				pos[agent.id][1] += dist_mutated
 
-			if agent.type != 'mutated':
-
-				for tag in agent.parents:
-
-					if agent.tactic[tag] == nash[tag]:
-
-						colour = 'steelblue'
-
-					else:
-
-						colour = 'grey'
-
-					graph[tag].add_edge(agent.parents[tag], agent.id,
-										colour=colour)
-
-	return graph, pos, colour_nodes
+	return graph, pos
 
 
-def show_network(graph, pos, colour_nodes):
+def show_network(graph, pos):
 
 	i = 0
 
@@ -124,44 +122,70 @@ def show_network(graph, pos, colour_nodes):
 		i += 1
 
 		plt.subplot(23 * 10 + i).set_title(tag)
-		edges, colours = zip(*nx.get_edge_attributes(graph[tag],'colour') \
-							 .items())
+		edges, colours_edges = zip(*nx.get_edge_attributes(graph[tag],'colour')\
+								   .items())
+		nodes, colours_nodes = zip(*nx.get_node_attributes(graph[tag],'colour')\
+								   .items())
 		nx.draw(graph[tag], pos, node_size=10, edgelist=edges,
-				node_color=colour_nodes[tag],
-				arrowstyle='->', arrowsize=20, edge_color=colours,
-				width=0.5)
+				node_color=colours_nodes, arrowstyle='->', arrowsize=20,
+				edge_color=colours_edges, width=0.5)
 
 	plt.show()
 
 
 def create_path(simulation, nash):
 
-	copy_simulation = cp.deepcopy(simulation)
+	dist_mutated = 0.05
 
-	for generation in copy_simulation.generations:
+	graph = {}
+	pos = {}
 
-		for agent in generation.population:
+	nash_list = []
 
-			print(agent.tactic)
+	for tag in simulation.generations[1].population[1].tactic:
 
-			if agent.tactic != nash:
+		graph[tag] = nx.Graph()
 
-				print('no')
+	factor_x = 1 / len(simulation.generations)
+	factor_y = 1 / (simulation.pop_size + dist_mutated)
 
-				agent.parents = {}
+	for tag in graph:
 
-			else:
+		for generation in simulation.generations:
 
-				print('yes')
+			for agent in generation.population:
 
-				new_parents = {}
+				if agent.tactic == nash:
 
-				for tag in agent.parents:
+					colour_node = 'blue'
+					nash_list.append(agent)
 
-					if agent.parents[tag] == nash[tag]:
+				else:
 
-						new_parents[tag] = agent.parents[tag]
+					colour_node = 'grey'
 
-				agent.parents = new_parents
+				graph[tag].add_node(agent.id, colour=colour_node)
 
-	return copy_simulation
+			pos[agent.id] = [agent.gen * factor_x,
+							 (agent.id - 1000 * agent.gen) * factor_y]
+
+			if agent.type == 'normal':
+
+				pos[agent.id][1] += dist_mutated
+
+		for agent in nash_list:
+
+			graph[tag] = find_path(agent, graph, tag)
+
+	return graph, pos
+
+
+def find_path(agent, graph, tag):
+
+	graph[tag].add_edge(agent.parents[tag].id, agent.id, colour='steelblue')
+
+	while agent.parents[tag] != None:
+
+		graph[tag] = find_path(agent.parents[tag], graph, tag)
+
+	return graph[tag]

@@ -14,7 +14,7 @@ from visualizers import create_lists, plot_results, create_network, \
 
 alpha = 0.4
 pop_size = 10
-nr_mutated = 1
+nr_mutated = 0
 nr_games = 100
 nr_generations = 10
 
@@ -28,10 +28,10 @@ nash = {'u + r' : 1,
 test = Simulation(1, alpha, pop_size, nr_mutated, nr_games)
 test.iterate(nr_generations)
 
-graph, pos, colours = create_network(test, nash)
-show_network(graph, pos, colours)
+# graph, pos = create_network(test, nash)
+# show_network(graph, pos)
 
-graph, pos, colours = create_network(create_path(test, nash), nash)
-show_network(graph, pos, colours)
+graph, pos = create_path(test, nash)
+show_network(graph, pos)
 
 # plot_results(create_lists(test))
