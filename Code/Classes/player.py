@@ -6,44 +6,49 @@ import numpy.random as rnd
 
 class Player(object):
 
-	def __init__(self, id):
+	def __init__(self, id, generation, type):
 
 		self.id = id
+		self.gen = generation
+		self.type = type
+
 		self.tactic = self.empty_tactic()
 
 		self.score = 0
 		self.fitness = None
 		self.card = None
 
+		self.parents = {}
+
 
 	def decide_move(self, game):
 
-		return self.tactic[game.main_card][self.card]
+		return self.tactic[game.main_card + ' + ' + self.card]
 
 
 	def empty_tactic(self):
 
-		return {'unknown' : {'red' : None, 'black' : None},
-			    'red' : 	{'red' : None, 'black' : None},
-		  		'black' : 	{'red' : None, 'black' : None}}
+		return {'u + r' : None,
+				'u + b' : None,
+				'r + r' : None,
+				'r + b' : None,
+				'b + r' : None,
+				'b + b' : None}
 
 
 	def random_tactic(self):
 
-		for main in self.tactic:
+		for tag in self.tactic:
 
-			for own in self.tactic[main]:
-
-				self.tactic[main][own] = rnd.randint(0, 2)
-
+			self.tactic[tag] = rnd.randint(0, 2)
 
 
 	def fitness_tactic(self, fitness_list):
 
-		for main in self.tactic:
+		for tag in self.tactic:
 
-			for own in self.tactic[main]:
+			i = rnd.randint(0, len(fitness_list))
 
-				i = rnd.randint(0, len(fitness_list))
+			self.tactic[tag] = fitness_list[i].tactic[tag]
 
-				self.tactic[main][own] = fitness_list[i].tactic[main][own]
+			self.parents[tag] = fitness_list[i].id

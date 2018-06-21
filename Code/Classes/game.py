@@ -14,7 +14,7 @@ class Game(object):
 		self.alpha = alpha
 
 		self.stakes = None
-		self.main_card = 'unknown'
+		self.main_card = 'u'
 
 
 	def get_card(self):
@@ -23,11 +23,11 @@ class Game(object):
 
 		if i < (self.alpha * 100):
 
-			return 'red'
+			return 'r'
 
 		elif i >= (self.alpha * 100):
 
-			return 'black'
+			return 'b'
 
 
 	def payout(self, winner):

@@ -9,19 +9,26 @@ from Classes.game import Game
 
 class Generation(object):
 
-	def __init__(self, id, pop_size):
+	def __init__(self, id, pop_size, nr_mutated):
 
 		self.id = id
-		self.population = self.create_population(pop_size)
+		self.pop_size = pop_size
+		self.nr_mutated = nr_mutated
+		self.population = self.create_population()
 
 
-	def create_population(self, pop_size):
+	def create_population(self):
 
 		population = []
 
-		for i in range(0, pop_size):
+		for i in range(0, self.pop_size):
 
-			population.append(Player(i))
+			population.append(Player(self.id * 1000 + i, self.id,
+									 'normal'))
+
+		for i in range(0, self.nr_mutated):
+
+			population[i].type = 'mutated'
 
 		return population
 
@@ -37,7 +44,13 @@ class Generation(object):
 
 		for agent in self.population:
 
-			agent.fitness_tactic(fitness_list)
+			if agent.type == 'mutated':
+
+				agent.random_tactic()
+
+			else:
+
+				agent.fitness_tactic(fitness_list)
 
 
 	def calc_fitness(self):
@@ -50,15 +63,21 @@ class Generation(object):
 
 				total += agent.score
 
+		total += total * (self.nr_mutated / self.pop_size)
+
 		for agent in self.population:
 
-			if agent.score <= 0:
+			if agent.score > 0:
 
-				agent.fitness = 0
+				agent.fitness = agent.score / total
+
+			elif agent.type == 'mutated':
+
+				agent.fitness = self.nr_mutated / self.pop_size
 
 			else:
 
-				agent.fitness = agent.score / total
+				agent.fitness = 0
 
 
 	def create_fitness_list(self):
@@ -85,24 +104,24 @@ class Generation(object):
 
 			j = [None]
 
-			for i in range(0, int(len(self.population) / 2)):
+			for i in range(0, int(self.pop_size / 2)):
 
 				while any(elem in j for elem in list_1) or j == [None]:
 
-					j[0] = rnd.randint(0, len(self.population))
+					j[0] = rnd.randint(0, self.pop_size)
 
 				list_1.append(j[0])
 
-			for i in range(0, int(len(self.population) / 2)):
+			for i in range(0, int(self.pop_size / 2)):
 
 				while any(elem in j for elem in list_2) or \
 					  any(elem in j for elem in list_1):
 
-					j[0] = rnd.randint(0, len(self.population))
+					j[0] = rnd.randint(0, self.pop_size)
 
 				list_2.append(j[0])
 
-			for i in range(0, int(len(self.population) / 2)):
+			for i in range(0, int(self.pop_size / 2)):
 
 				game = Game(self.population[list_1[i]],
 							self.population[list_2[i]], alpha)
