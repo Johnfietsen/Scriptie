@@ -1,10 +1,10 @@
 
 
-import numpy as np
 import numpy.random as rnd
 
 from Classes.player import Player
 from Classes.game import Game
+from Classes.group import Group
 
 
 class Generation(object):
@@ -14,7 +14,9 @@ class Generation(object):
 		self.id = id
 		self.pop_size = pop_size
 		self.nr_mutated = nr_mutated
+
 		self.population = self.create_population()
+		self.groups = None
 
 
 	def create_population(self):
@@ -127,3 +129,37 @@ class Generation(object):
 							self.population[list_2[i]], alpha)
 
 				game.play()
+
+
+	def create_groups(self):
+
+		self.groups = {}
+
+		tactic = {}
+
+		i = 1
+
+		for tag in self.population[0].tactic:
+
+			i *= 2
+			tactic[tag] = None
+
+		for j in range(0, i):
+
+			b_tactic = format(j, "06b")
+
+			k = 0
+
+			for tag in tactic:
+
+				tactic[tag] = int(b_tactic[k])
+
+				k += 1
+
+			self.groups[b_tactic] = Group(self.id * 1000 + j, self.id, tactic, 
+										  self)
+
+		for group in self.groups:
+
+			self.groups[group].find_parents(self)
+			# print(group, self.groups[group].parents, len(self.groups[group].population))

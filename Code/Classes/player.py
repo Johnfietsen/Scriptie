@@ -1,6 +1,5 @@
 
 
-import numpy as np
 import numpy.random as rnd
 
 
@@ -13,10 +12,10 @@ class Player(object):
 		self.type = type
 
 		self.tactic = self.empty_tactic()
+		self.card = None
 
 		self.score = 0
 		self.fitness = None
-		self.card = None
 
 		self.parents = {}
 

@@ -5,6 +5,7 @@ import numpy.random as rnd
 from Classes.player import Player
 from Classes.generation import Generation
 from Classes.game import Game
+from Classes.group import Group
 
 
 class Simulation(object):
@@ -40,5 +41,6 @@ class Simulation(object):
 
 			next = Generation(i, self.pop_size, self.nr_mutated)
 			next.assign_by_fitness(previous.create_fitness_list())
+			next.create_groups()
 
 			self.generations.append(next)

@@ -54,25 +54,30 @@ def plot_results(info):
 	plt.show()
 
 
-def create_network(simulation, nash):
+def standard_network(simulation, nash):
 
 	dist_mutated = 0.05
 
 	graph = {}
 	pos = {}
 
+	factor_x = 1 / len(simulation.generations)
+	factor_y = 1 / (simulation.pop_size + dist_mutated)
+
 	for tag in simulation.generations[1].population[1].tactic:
 
 		graph[tag] = nx.Graph()
 
-	factor_x = 1 / len(simulation.generations)
-	factor_y = 1 / (simulation.pop_size + dist_mutated)
+		for generation in simulation.generations:
 
-	for generation in simulation.generations:
+			for agent in generation.population:
 
-		for agent in generation.population:
+				pos[agent.id] = [agent.gen * factor_x,
+								 (agent.id - 1000 * agent.gen) * factor_y]
 
-			for tag in graph:
+				if agent.type == 'normal':
+
+					pos[agent.id][1] += dist_mutated
 
 				if agent.tactic == nash:
 
@@ -88,27 +93,18 @@ def create_network(simulation, nash):
 
 				graph[tag].add_node(agent.id, colour=colour_node)
 
-				if agent.type != 'mutated':
+				if agent.parents != {}:
 
-					for tag in agent.parents:
+					if agent.tactic[tag] == nash[tag]:
 
-						if agent.tactic[tag] == nash[tag]:
+						colour_edge = 'steelblue'
 
-							colour_edge = 'steelblue'
+					else:
 
-						else:
+						colour_edge = 'grey'
 
-							colour_edge = 'grey'
-
-						graph[tag].add_edge(agent.parents[tag].id, agent.id,
-											colour=colour_edge)
-
-			pos[agent.id] = [agent.gen * factor_x,
-							 (agent.id - 1000 * agent.gen) * factor_y]
-
-			if agent.type == 'normal':
-
-				pos[agent.id][1] += dist_mutated
+					graph[tag].add_edge(agent.parents[tag].id, agent.id,
+										colour=colour_edge)
 
 	return graph, pos
 
@@ -133,59 +129,102 @@ def show_network(graph, pos):
 	plt.show()
 
 
-def create_path(simulation, nash):
+def path_network(simulation, nash):
 
 	dist_mutated = 0.05
 
 	graph = {}
 	pos = {}
 
-	nash_list = []
-
-	for tag in simulation.generations[1].population[1].tactic:
-
-		graph[tag] = nx.Graph()
-
 	factor_x = 1 / len(simulation.generations)
 	factor_y = 1 / (simulation.pop_size + dist_mutated)
 
-	for tag in graph:
+	for tag in simulation.generations[0].population[0].tactic:
+
+		graph[tag] = nx.Graph()
 
 		for generation in simulation.generations:
 
 			for agent in generation.population:
 
+				pos[agent.id] = [agent.gen * factor_x,
+								 (agent.id - 1000 * agent.gen) * factor_y]
+
+				if agent.type == 'normal':
+
+					pos[agent.id][1] += dist_mutated
+
 				if agent.tactic == nash:
 
-					colour_node = 'blue'
-					nash_list.append(agent)
+					graph[tag].add_node(agent.id, colour='blue')
 
-				else:
+					graph = find_path(agent, graph, tag)
 
-					colour_node = 'grey'
+		for generation in simulation.generations:
 
-				graph[tag].add_node(agent.id, colour=colour_node)
+			for agent in generation.population:
 
-			pos[agent.id] = [agent.gen * factor_x,
-							 (agent.id - 1000 * agent.gen) * factor_y]
+				if not graph[tag].has_node(agent.id):
 
-			if agent.type == 'normal':
-
-				pos[agent.id][1] += dist_mutated
-
-		for agent in nash_list:
-
-			graph[tag] = find_path(agent, graph, tag)
+					graph[tag].add_node(agent.id, colour='grey')
 
 	return graph, pos
 
 
 def find_path(agent, graph, tag):
 
+	if not graph[tag].has_node(agent.parents[tag].id):
+
+		graph[tag].add_node(agent.parents[tag].id, colour='steelblue')
+
 	graph[tag].add_edge(agent.parents[tag].id, agent.id, colour='steelblue')
 
-	while agent.parents[tag] != None:
+	if agent.parents[tag].parents != {}:
+		graph = find_path(agent.parents[tag], graph, tag)
 
-		graph[tag] = find_path(agent.parents[tag], graph, tag)
+	return graph
 
-	return graph[tag]
+
+def phenotype_network(simulation):
+
+	graph = nx.Graph()
+	pos = {}
+	size = {}
+
+	factor_x = 1 / len(simulation.generations)
+	factor_y = 1 / len(simulation.generations[1].groups)
+
+	for i in range(1, len(simulation.generations)):
+
+		for tag in simulation.generations[i].groups:
+
+			group = simulation.generations[i].groups[tag]
+
+			pos[group.id] = [group.gen * factor_x,
+							 (group.id - 1000 * group.gen) * factor_y]
+
+			size[group.id] = len(group.population)
+
+			graph.add_node(group.id, colour='grey')
+
+		if i > 1:
+			
+			for tag in simulation.generations[i].groups:
+
+				group = simulation.generations[i].groups[tag]
+
+				for tag_2 in group.parents:
+
+					graph.add_edge(simulation.generations[i - 1].groups[tag_2]\
+								   .id, group.id, colour='grey')
+
+		edges, colours_edges = zip(*nx.get_edge_attributes(graph,'colour')\
+								   .items())
+		nodes, colours_nodes = zip(*nx.get_node_attributes(graph,'colour')\
+								   .items())
+
+		nx.draw(graph, pos, node_size=10, edgelist=edges,
+				node_color=colours_nodes, arrowstyle='->', arrowsize=20,
+				edge_color=colours_edges, width=0.5)
+
+	plt.show()

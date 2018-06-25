@@ -6,16 +6,16 @@ from Classes.player import Player
 from Classes.generation import Generation
 from Classes.game import Game
 from Classes.simulation import Simulation
-from visualizers import create_lists, plot_results, create_network, \
-						show_network, create_path
+from visualizers import create_lists, plot_results, standard_network, \
+						show_network, path_network, phenotype_network
 
 
-# rnd.seed(6)
+# rnd.seed(5)
 
 alpha = 0.4
 pop_size = 10
-nr_mutated = 0
-nr_games = 100
+nr_mutated = 1
+nr_games = 50
 nr_generations = 10
 
 nash = {'u + r' : 1,
@@ -28,10 +28,12 @@ nash = {'u + r' : 1,
 test = Simulation(1, alpha, pop_size, nr_mutated, nr_games)
 test.iterate(nr_generations)
 
-# graph, pos = create_network(test, nash)
+phenotype_network(test)
+
+# graph, pos = standard_network(test, nash)
 # show_network(graph, pos)
 
-graph, pos = create_path(test, nash)
-show_network(graph, pos)
+# graph, pos = path_network(test, nash)
+# show_network(graph, pos)
 
 # plot_results(create_lists(test))

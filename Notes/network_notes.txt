@@ -1,0 +1,94 @@
+degree of connectivity:
+	number of edges of node
+
+in & out degree:
+	amount of in and out links
+
+weighted graph:
+	weight given to links
+
+adjacency matrix:
+	matrix representation of connections
+
+walk:
+	sequence of adjacent vertices where repetition is allowed
+
+path:
+	walk without revisiting nodes
+
+geodesic:
+	shortest path between two nodes on a graph
+
+centrality:
+	measure of importance of a node
+
+node's significance:
+	measure of how critical the node is to the flow
+
+
+LOCAL METRICS
+
+degree connectivity 2:
+	number of nodes it is connected to vs the total it could possibly be connected to
+
+closeness centrality:
+	measurement of the node's capacity to effect all other elements in the network
+
+betweeness centrality:
+	vertices that have high probability of occuring on a randomly chosen shortest path
+	
+prestige centrality:
+	eigenvector centrality, assign relatives scores to important nodes
+
+
+GLOBAL METRICS
+
+network topology:
+	overall patterns that emerge from network
+
+connectivity:
+	density of the connections in the system
+
+scale:
+	number of nodes (sometimes momre is not just more, but different)
+
+clustering:
+	forming of subsystems
+
+
+NUMBER OF CONNECTIONS IS NOT JUST A QUANTITATIVE CHANGE, BUT ALSO QUALITATIVE
+
+coupling parameter:
+	difficulty of two nodes to connect
+
+ease of interaction:
+	the circumstances under which nodes are likely to interact
+
+density:
+	number of edges / number of possible edges
+
+!!! FASE TRANSISTIONS !!!
+
+diameter:
+	the longest of all the geodesics (shortest paths)
+
+average path length:
+	shortest path between all pairs, adding up and dividing by total number
+
+linear and exponential progression
+
+connected:
+	every node is reachable by other nodes
+
+clustering:
+	a sub-set in a graph that posses certain common characteristics or relate
+
+homophily:
+	interaction with similar nodes requires less resources
+
+degree distribution:
+	overall degree of connectedness to a network as a primary parameter
+
+
+
+
