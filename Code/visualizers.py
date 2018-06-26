@@ -109,7 +109,7 @@ def standard_network(simulation, nash):
 	return graph, pos
 
 
-def show_network(graph, pos):
+def six_networks(graph, pos):
 
 	i = 0
 
@@ -126,6 +126,7 @@ def show_network(graph, pos):
 				node_color=colours_nodes, arrowstyle='->', arrowsize=20,
 				edge_color=colours_edges, width=0.5)
 
+	# plt.savefig("Graph.png", format="PNG")
 	plt.show()
 
 
@@ -189,7 +190,7 @@ def phenotype_network(simulation):
 
 	graph = nx.Graph()
 	pos = {}
-	size = {}
+	sizes = []
 
 	factor_x = 1 / len(simulation.generations)
 	factor_y = 1 / len(simulation.generations[1].groups)
@@ -203,28 +204,47 @@ def phenotype_network(simulation):
 			pos[group.id] = [group.gen * factor_x,
 							 (group.id - 1000 * group.gen) * factor_y]
 
-			size[group.id] = len(group.population)
+			sizes.append(len(group.population))
 
-			graph.add_node(group.id, colour='grey')
+			graph.add_node(group.id, colour='blue')
 
 		if i > 1:
-			
+
 			for tag in simulation.generations[i].groups:
 
 				group = simulation.generations[i].groups[tag]
 
 				for tag_2 in group.parents:
 
-					graph.add_edge(simulation.generations[i - 1].groups[tag_2]\
-								   .id, group.id, colour='grey')
+					weight = (group.parents[tag_2] / simulation.pop_size)
 
-		edges, colours_edges = zip(*nx.get_edge_attributes(graph,'colour')\
-								   .items())
-		nodes, colours_nodes = zip(*nx.get_node_attributes(graph,'colour')\
-								   .items())
+					graph.add_edge(simulation.generations[i - 1].groups[tag_2]\
+								   .id, group.id, colour='black', weight=weight)
+
+	return graph, pos, sizes
+
+
+def show_network(graph, pos, sizes=None):
+
+	edges, colours_edges = zip(*nx.get_edge_attributes(graph,'colour')\
+							   .items())
+	nodes, colours_nodes = zip(*nx.get_node_attributes(graph,'colour')\
+							   .items())
+
+	if sizes == None:
 
 		nx.draw(graph, pos, node_size=10, edgelist=edges,
 				node_color=colours_nodes, arrowstyle='->', arrowsize=20,
-				edge_color=colours_edges, width=0.5)
+				edge_color=colours_edges, width = 0.2)
+
+	else:
+
+		weights = [graph[u][v]['weight'] for u,v in edges]
+
+		nx.draw(graph, pos, node_size=sizes, edgelist=edges,
+				node_color=colours_nodes, arrowstyle='->', arrowsize=20,
+				edge_color=colours_edges, width=weights)
+
+	# plt.savefig("Graph2.png", format="PNG")
 
 	plt.show()

@@ -1,0 +1,34 @@
+
+doel:
+RL en GA combineren om tot een beter algoritme te komen
+
+
+opzet simulatie:
+1. maak populatie van actoren met random tactiek
+2. laat populatie met elkaar interactie aangaan
+   en tactiek aanpassen aan de hand van succes/failure
+3. bepaal fitness van de populatie aan de hand van hoeveel
+   ze hebben gewonnen (puntensysteem moet nog worden bepaald)
+4. combineer tactieken van de actoren met de hoogste fitness
+   en gebruik die om de nieuwe generatie te maken (waarbij via
+   finess sharing ervoor wordt gezorgd dat er meerdere locale
+   maxima worden opgezocht)
+5. herhaal vanaf 2
+
+
+conclusies aan de hand van:
+1. spellen bekijken waarin een Nash-equilibrium bekend is
+   (wordt deze gevonden door het iteratieve process)
+2. diversiteit van maxima (hoeveel zijn er, hoe verschillen ze)
+3. doorgeven van phenotypen (Price equations)
+
+
+opzet scriptie:
+1. samenwerking in GA
+2. combinatie RL en GA
+3. Nash equilibrium
+4. Price equations
+5. opzet van simulatie
+6. resultaten
+7. conclusies/analyse resultaten
+8. discussie

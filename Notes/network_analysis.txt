@@ -1,0 +1,24 @@
+
+setup simulation
+
+- create 100 players
+- every player plays 100 random games
+- fitness for every action for every player
+- new generations created based on fitnesses per action (wheel of fortune style)
+- repeat
+
+
+setup analysis 1
+
+- make connection between parent and child if phenotype is inherited
+- create network of all connections through generations
+- draw lines through network from initial to final generation
+- identify important agents is system
+
+
+setup analysis 2
+
+- make connection between competitors if competitor forces player to change tactic
+- create network of all connections through generations
+- draw lines through network from initial to final generation
+- identify important agents is system

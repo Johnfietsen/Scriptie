@@ -1,6 +1,7 @@
 
 
 import numpy.random as rnd
+import copy as cp
 
 from Classes.player import Player
 from Classes.game import Game
@@ -135,14 +136,14 @@ class Generation(object):
 
 		self.groups = {}
 
-		tactic = {}
+		tactic_format = {}
 
 		i = 1
 
 		for tag in self.population[0].tactic:
 
 			i *= 2
-			tactic[tag] = None
+			tactic_format[tag] = None
 
 		for j in range(0, i):
 
@@ -150,16 +151,17 @@ class Generation(object):
 
 			k = 0
 
+			tactic = cp.deepcopy(tactic_format)
+
 			for tag in tactic:
 
 				tactic[tag] = int(b_tactic[k])
 
 				k += 1
 
-			self.groups[b_tactic] = Group(self.id * 1000 + j, self.id, tactic, 
-										  self)
+			self.groups[b_tactic] = Group(self.id * 1000 + j, self.id, tactic,
+										  self, b_tactic)
 
-		for group in self.groups:
+		for tag_2 in self.groups:
 
-			self.groups[group].find_parents(self)
-			# print(group, self.groups[group].parents, len(self.groups[group].population))
+			self.groups[tag_2].find_parents(self)

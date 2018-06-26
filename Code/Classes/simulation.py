@@ -2,10 +2,7 @@
 
 import numpy.random as rnd
 
-from Classes.player import Player
 from Classes.generation import Generation
-from Classes.game import Game
-from Classes.group import Group
 
 
 class Simulation(object):

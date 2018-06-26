@@ -1,0 +1,25 @@
+
+Setup simulation
+
+- 100 player 1, random tactic (binary list)
+- 100 player 2, random tactic (binary list)
+- x times matching game is played, +1 for player 1 if numbers match, +1 for player 2 if numbers mismatch
+- most succesfull of both populations create offspring
+- repeat
+
+
+1001 1110	+3
+0111 0100	+5
+
+
+OF
+
+- 100 player 1, random tactic (binary list)
+- 100 player 2, random tactic (binary list)
+- x times matching game is played, +1 for player 1 if more match than mismatch, +1 for player 2 if more match than mismatch
+- most succesfull of both populations create offspring
+- repeat
+
+
+1001 1110	+0
+0111 0100	+1

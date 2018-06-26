@@ -1,0 +1,72 @@
+
+Fitness sharing: GA optimization in multiple maxima
+Nash equilibria in GA: behaviour of multiple artificial actors
+RL in GA: optimization method
+Price in GA: population analysis in GA
+
+Kan twee kanten op gaan:
+1. GA gebruiken om populatie analyse uit te voeren
+2. populatie analyse gebruiken om GA te verbeteren
+
+Onderscheid tussen beste algoritme maken
+en beste leeromgeving voor een algoritme
+
+// Als een AI policy kan evalueren, kan deze ook de policy van
+// haar/andere AI's trainingsschema evalueren. Zo ontstaat een
+// algoritme dat zichzelf/andere algoritmen kan leren hoe te leren.
+
+
+Er zijn drie onderzoeksgebieden voor DL:
+1. Een model maken die zo goed mogelijk informatie kan interpreteren
+2. Een systeem opzetten waarin dit model zo goed mogelijk kan leren
+3. Het bruikbaar maken in de wereld
+
+Ik ga in onderzoeksgebied 2 werken. Wat er tot nu toe bestaat in dit gebied:
+1. Reinforcement Learning: leren door tegen zichzelf te spelen
+2. Supervised Learning: leren door informatie aan een label te koppelen
+3. Unsupervised Learning: leren door vergelijkbare elementen te clusteren
+
+
+// Game Theory over het besturen van een land:
+// https://www.youtube.com/watch?v=rStL7niR7gs
+
+
+Combinatie maken tussen RL en GA:
+1. Maak populatie
+2. Laat populatie van elkaar leren
+3. Vervorm ze tot nieuwe populatie (nieuwe generatie)
+
+Wat is het voordeel van een RL in GA toepassen?
+-> Naarmate de populatie evolueert, wordt het 'spel' dat ze spelen steeds
+   moeilijker. Zo worden de agenten niet alleen sterker door de random
+   mutaties, maar ook doordat andere random muteren. 
+-> Tegenstrijdigheid komt voor als er wordt geoptimaliseerd in 1 maximum.
+   Dan worden alle agenten namelijk verglijkbaar en zal de tactiek die ze
+   gebruiken hetzelfde zijn.
+
+Voorbeelden van spellen die ze kunnen spelen:
+1. Stock market trading
+2. Rock, Paper, Scissors
+
+Het maakt een combinatie van leren omgaan met concurrentie en leren van
+concurrentie.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

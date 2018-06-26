@@ -2,8 +2,6 @@
 
 import numpy.random as rnd
 
-from Classes.player import Player
-
 
 class Game(object):
 

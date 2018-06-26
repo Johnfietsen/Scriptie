@@ -2,10 +2,11 @@
 
 class Group(object):
 
-	def __init__(self, id, generation_nr, tactic, generation):
+	def __init__(self, id, generation_nr, tactic, generation, b_tactic):
 
 		self.id = id
 		self.gen = generation_nr
+		self.b_tactic = b_tactic
 		self.tactic = tactic
 
 		self.population = self.find_population(generation)
@@ -28,7 +29,7 @@ class Group(object):
 	def find_parents(self, generation):
 
 		self.parents = {}
-
+		
 		for tag_2 in generation.groups:
 
 			self.parents[tag_2] = 0
