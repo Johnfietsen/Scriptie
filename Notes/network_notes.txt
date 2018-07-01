@@ -1,10 +1,10 @@
 degree of connectivity:
 	number of edges of node
 
-in & out degree:
+in & out degree:					!!!!!!!!!!!!!!! average van sector, in bakjes
 	amount of in and out links
 
-weighted graph:
+weighted graph:						!!!!!!!!!!!!!!! input van NE oplossing
 	weight given to links
 
 adjacency matrix:
@@ -16,13 +16,13 @@ walk:
 path:
 	walk without revisiting nodes
 
-geodesic:
+geodesic:						!!!!!!???????????
 	shortest path between two nodes on a graph
 
-centrality:
+centrality:						!!!!!!!!!!!!!!!!?
 	measure of importance of a node
 
-node's significance:
+node's significance:					!!!!!!!!!!!!!!!!?
 	measure of how critical the node is to the flow
 
 
@@ -31,13 +31,13 @@ LOCAL METRICS
 degree connectivity 2:
 	number of nodes it is connected to vs the total it could possibly be connected to
 
-closeness centrality:
+closeness centrality:					!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	measurement of the node's capacity to effect all other elements in the network
 
-betweeness centrality:
+betweeness centrality:					!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	vertices that have high probability of occuring on a randomly chosen shortest path
 	
-prestige centrality:
+prestige centrality:					!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	eigenvector centrality, assign relatives scores to important nodes
 
 
@@ -46,11 +46,11 @@ GLOBAL METRICS
 network topology:
 	overall patterns that emerge from network
 
-connectivity:
+connectivity:						!!!!!!!!!!!!???????????????
 	density of the connections in the system
 
 scale:
-	number of nodes (sometimes momre is not just more, but different)
+	number of nodes (sometimes more is not just more, but different)
 
 clustering:
 	forming of subsystems
@@ -64,7 +64,7 @@ coupling parameter:
 ease of interaction:
 	the circumstances under which nodes are likely to interact
 
-density:
+density:						!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	number of edges / number of possible edges
 
 !!! FASE TRANSISTIONS !!!

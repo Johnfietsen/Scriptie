@@ -1,0 +1,41 @@
+
+\begin{center}
+	\begin{minipage}{13cm}
+		\begin{algorithm}[H]
+			\caption{Simplified poker game}
+			\begin{algorithmic}[1]
+            	\STATE player 1 and player 2 add 1 to stakes
+              	\STATE player 1 receives card \textit{\{red, black\}} \& chooses action \textit{\{fold, raise\}}
+                \IF {fold}
+                	\STATE player 2 wins 1, player 1 loses 1
+                \ELSIF {raise}
+                	\STATE player 2 receives card \textit{\{red, black\}} \& chooses action \textit{\{fold, check\}}
+                    \IF {fold}
+                    	\STATE player 1 wins 1, player 2 loses 1
+                    \ELSIF {check}
+                    	\STATE player 1 and player 2 add 1 to stakes
+              			\STATE winning card is revealed \textit{\{red, black\}}
+              			\STATE player 1 chooses action \textit{\{fold, raise\}}
+                        \IF {fold}
+                        	\STATE player 2 wins 2, player 1 loses 2
+                        \ELSIF {raise}
+                            \STATE player 2 chooses action \textit{\{fold, check\}}
+                            \IF {fold}
+                            	\STATE player 1 wins 2, player 2 loses 2
+                            \ELSIF {check}
+                            	\STATE player 1 and player 2 add 1 to stakes
+                                \IF {player 1's card = player 2's card}
+                                	\STATE player 1 and player 2 win 0
+                                \ELSIF {player 1's card = winning card}
+                                	\STATE player 1 wins 3, player 2 loses 3
+                                \ELSIF {player 2's card = winning card}
+                                	\STATE player 2 wins 3, player 1 loses 3
+                                \ENDIF
+                            \ENDIF
+                        \ENDIF
+                    \ENDIF
+                \ENDIF
+			\end{algorithmic}
+		\end{algorithm}
+	\end{minipage}
+\end{center}

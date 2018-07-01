@@ -1,0 +1,36 @@
+
+BRONNEN OM TE FIXEN
+
+
+Introduction:
+- EA in general
+- EA applications
+- EA black box
+- EA analysis
+- network analysis EA
+
+
+Background information:
+- EA workings
+- EA types
+
+- NE explanation
+- GT usage in research
+- convergence of evolutionary process to NE
+- usage of simplified poker games
+
+- network theory
+- networks and complexity
+- network parameters
+
+
+Method:
+- comparable poker games
+
+- examples of convergence of poker games
+
+- 
+
+- similar networks
+
+- 
