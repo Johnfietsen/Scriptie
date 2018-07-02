@@ -2,6 +2,7 @@
 
 import numpy.random as rnd
 import matplotlib.pyplot as plt
+import time
 
 from Classes.player import Player
 from Classes.generation import Generation
@@ -10,16 +11,18 @@ from Classes.simulation import Simulation
 from visualizers import create_lists, plot_results, standard_network, \
 						six_networks, path_network, phenotype_network, \
 						show_network, six_histograms, centrality_measures, \
-						path_network2
+						path_network2, one_histogram, plot_results
 
 
 # rnd.seed(5)
 
 alpha = 0.5
-pop_size = 50
-nr_mutated = int(0.05 * pop_size)
+pop_size = 100
+nr_mutated = 2
 nr_games = 50
 nr_generations = 10
+nr_sims = 10
+bucket_size = 25
 
 nash = {'u + r' : 1,
 		'u + b' : 1,
@@ -28,36 +31,69 @@ nash = {'u + r' : 1,
 		'b + r' : 1,
 		'b + b' : 1}
 
-# sims = []
-#
-# for i in range(0, 10):
-#
-# 	sims.append(Simulation(1, alpha, pop_size, nr_mutated, nr_games))
-# 	sims[i].iterate(nr_generations)
-#
-# six_histograms(sims, nash, 'path')
-# results = centrality_measures(sims, nash)
-#
-# for tag in results:
-#
-# 	print(tag, results[tag])
+start_time = time.time()
 
+sims = []
 
-test = Simulation(1, alpha, pop_size, nr_mutated, nr_games)
-test.iterate(nr_generations)
+bucket_1 = []
+bucket_2 = []
+bucket_3 = []
 
-graph, pos = path_network2(test, nash)
-show_network(graph, pos)
+# for i in range(0, nr_sims):
 
-# graph, pos, sizes = phenotype_network(test)
-# show_network(graph, pos, sizes)
+i = 0
 
-# graph, pos = standard_network(test, nash)
-# # show_network(graph['u + r'], pos)
-# six_networks(graph, pos)
-#
-# graph, pos = path_network(test, nash)
-# # show_network(graph['u + r'], pos)
-# six_networks(graph, pos)
-#
-# plot_results(create_lists(test))
+while len(bucket_3) < bucket_size:
+
+	sims.append(Simulation(1, alpha, pop_size, nr_mutated, nr_games))
+	sims[i].iterate(nr_generations)
+
+	counter = 0
+
+	# for generation in sims[i].generations:
+	#
+	# 	for agent in generation.population:
+	#
+	# 		if agent.tactic == nash:
+	#
+	# 			counter += 1
+
+	for agent in sims[i].generations[nr_generations].population:
+
+		if agent.tactic == nash:
+
+			counter += 1
+
+	if counter < 0.33 * pop_size: # * nr_generations:
+
+		bucket_1.append(sims[i])
+
+	elif counter < 0.67 * pop_size: # * nr_generations:
+
+		bucket_2.append(sims[i])
+
+	elif counter < 1.00 * pop_size: # * nr_generations:
+
+		bucket_3.append(sims[i])
+
+	i += 1
+
+	print('0.33', len(bucket_1))
+	print('0.66', len(bucket_2))
+	print('1.00', len(bucket_3))
+
+print("--- final ---")
+
+print('0.33', len(bucket_1))
+print('0.66', len(bucket_2))
+print('1.00', len(bucket_3))
+
+print("---  ---  ---")
+
+results = centrality_measures(bucket_3, nash, 'standard')
+plot_results(nr_sims, results, 'standard')
+
+results = centrality_measures(bucket_3, nash, 'path')
+plot_results(nr_sims, results, 'path')
+
+print("--- %s seconds ---" % (time.time() - start_time))
