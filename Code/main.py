@@ -11,17 +11,19 @@ from Classes.simulation import Simulation
 from visualizers import create_lists, plot_results, standard_network, \
 						six_networks, path_network, phenotype_network, \
 						show_network, six_histograms, centrality_measures, \
-						path_network2, one_histogram, plot_results
+						path_network2, one_histogram, plot_results, \
+						standard_network2
 
 
-# rnd.seed(5)
+rnd.seed(4)
 
 alpha = 0.5
 pop_size = 100
-nr_mutated = 2
+nr_mutated = int(0.06 * pop_size)
+pop_size +=  nr_mutated
 nr_games = 50
 nr_generations = 10
-nr_sims = 10
+nr_sims = 25
 bucket_size = 25
 
 nash = {'u + r' : 1,
@@ -31,32 +33,17 @@ nash = {'u + r' : 1,
 		'b + r' : 1,
 		'b + b' : 1}
 
+
 start_time = time.time()
 
 sims = []
 
-bucket_1 = []
-bucket_2 = []
-bucket_3 = []
+for i in range(0, nr_sims):
 
-# for i in range(0, nr_sims):
-
-i = 0
-
-while len(bucket_3) < bucket_size:
-
-	sims.append(Simulation(1, alpha, pop_size, nr_mutated, nr_games))
+	sims.append(Simulation(i, alpha, pop_size, nr_mutated, nr_games))
 	sims[i].iterate(nr_generations)
 
 	counter = 0
-
-	# for generation in sims[i].generations:
-	#
-	# 	for agent in generation.population:
-	#
-	# 		if agent.tactic == nash:
-	#
-	# 			counter += 1
 
 	for agent in sims[i].generations[nr_generations].population:
 
@@ -64,36 +51,16 @@ while len(bucket_3) < bucket_size:
 
 			counter += 1
 
-	if counter < 0.33 * pop_size: # * nr_generations:
+	for agent in sims[i].generations[0].population:
 
-		bucket_1.append(sims[i])
+		if agent.tactic == nash:
 
-	elif counter < 0.67 * pop_size: # * nr_generations:
+			counter -= 1
 
-		bucket_2.append(sims[i])
-
-	elif counter < 1.00 * pop_size: # * nr_generations:
-
-		bucket_3.append(sims[i])
-
-	i += 1
-
-	print('0.33', len(bucket_1))
-	print('0.66', len(bucket_2))
-	print('1.00', len(bucket_3))
-
-print("--- final ---")
-
-print('0.33', len(bucket_1))
-print('0.66', len(bucket_2))
-print('1.00', len(bucket_3))
-
-print("---  ---  ---")
-
-results = centrality_measures(bucket_3, nash, 'standard')
+results = centrality_measures(sims, nash, 'standard')
 plot_results(nr_sims, results, 'standard')
 
-results = centrality_measures(bucket_3, nash, 'path')
+results = centrality_measures(sims, nash, 'path')
 plot_results(nr_sims, results, 'path')
 
 print("--- %s seconds ---" % (time.time() - start_time))

@@ -126,28 +126,30 @@ def standard_network2(simulation, nash):
 
 			for agent in generation.population:
 
-				pos[agent.id] = [agent.gen * factor_x,
-								 (agent.id - 1000 * agent.gen) * factor_y]
+				if agent.type != 'mutated':
 
-				if agent.type == 'normal':
+					pos[agent.id] = [agent.gen * factor_x,
+									 (agent.id - 1000 * agent.gen) * factor_y]
 
-					pos[agent.id][1] += dist_mutated
+					# if agent.type == 'normal':
+					#
+					# 	pos[agent.id][1] += dist_mutated
 
-				if agent.tactic == nash:
+					if agent.tactic == nash:
 
-					colour_node = 'blue'
+						colour_node = 'blue'
 
-				elif agent.tactic[tag] == nash[tag]:
+					elif agent.tactic[tag] == nash[tag]:
 
-					colour_node = 'steelblue'
+						colour_node = 'steelblue'
 
-				else:
+					else:
 
-					colour_node = 'grey'
+						colour_node = 'grey'
 
-				graph.add_node(agent.id, colour=colour_node)
+					graph.add_node(agent.id, colour=colour_node)
 
-				if agent.parents != {}:
+				if agent.parents != {} and agent.parents[tag].type != 'mutated':
 
 					if agent.tactic[tag] == nash[tag]:
 
@@ -261,15 +263,16 @@ def path_network2(simulation, nash):
 				pos[agent.id] = [agent.gen * factor_x,
 								 (agent.id - 1000 * agent.gen) * factor_y]
 
-				if agent.type == 'normal':
+				# if agent.type == 'normal':
+				#
+				# 	pos[agent.id][1] += dist_mutated
 
-					pos[agent.id][1] += dist_mutated
-
-				if agent.tactic == nash:
+				if agent.tactic == nash and agent.type != 'mutated':
 
 					graph.add_node(agent.id, colour='blue')
 
-					if agent.type == 'normal' and generation.id != 0:
+					# if agent.type == 'normal' and generation.id != 0:
+					if generation.id != 0:
 
 						graph = find_path2(agent, graph, nash,
 										   simulation.pop_size)
@@ -278,7 +281,7 @@ def path_network2(simulation, nash):
 		#
 		# 	for agent in generation.population:
 		#
-		# 		if not graph.has_node(agent.id):
+		# 		if not graph.has_node(agent.id) and agent.type != 'mutated':
 		#
 		# 			graph.add_node(agent.id, colour='grey')
 
@@ -289,7 +292,8 @@ def find_path2(agent, graph, nash, pop_size):
 
 	for tag in agent.parents:
 
-		if agent.parents[tag].tactic[tag] == nash[tag]:
+		if agent.parents[tag].tactic[tag] == nash[tag] and \
+		   agent.parents[tag].type != 'mutated':
 
 			if not graph.has_node(agent.parents[tag].id):
 

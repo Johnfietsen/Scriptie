@@ -62,7 +62,7 @@ class Generation(object):
 
 		for agent in self.population:
 
-			if agent.score > 0:
+			if agent.score > 0 and agent.type != 'mutated':
 
 				total += agent.score
 
@@ -70,13 +70,13 @@ class Generation(object):
 
 		for agent in self.population:
 
-			if agent.score > 0:
-
-				agent.fitness = agent.score / total
-
-			elif agent.type == 'mutated':
+			if agent.type == 'mutated':
 
 				agent.fitness = self.nr_mutated / self.pop_size
+
+			elif agent.score > 0:
+
+				agent.fitness = agent.score / total
 
 			else:
 
