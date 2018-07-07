@@ -30,7 +30,7 @@ class Simulation(object):
 
 		for i in range(1, nr_iterations + 1):
 
-			print('generation', i)
+			# print('generation', i)
 
 			previous = self.generations[i - 1]
 
